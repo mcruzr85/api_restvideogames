@@ -135,10 +135,10 @@ router.get("/", async (req, res) => {
     const { con,  name } = req.query;
 
     console.log(` estoy en back con es `);
-   console.log(con);
+    console.log(con);
 
-   console.log(` estoy en back name es `);
-   console.log(name);
+    console.log(` estoy en back name es `);
+    console.log(name);
 
     let vgsApi = [];
     let vgsDb = [];
