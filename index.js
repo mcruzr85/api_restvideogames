@@ -18,7 +18,7 @@
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-const PORT = process.env.PORT ?? 3001;
+const PORT = process.env.PORT || 3001;
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
 
@@ -28,4 +28,4 @@ conn.sync({ force: false })
   server.listen(PORT, () => {
     console.log(`Server working, listening at port ${PORT}`); // eslint-disable-line no-console
   });
-});
+}); 
