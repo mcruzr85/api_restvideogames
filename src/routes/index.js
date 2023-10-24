@@ -13,7 +13,7 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 
 router.get("/", (req,res)=>{//este general funciono ok
-    res.status(200).send("probando conexion");
+    res.status(200).send("API REST - Rick and Morty - Backend con NodeJS- by Meybis  Cruz Rodriguez");
 });
 
 
