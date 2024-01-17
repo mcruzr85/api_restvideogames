@@ -164,22 +164,22 @@ router.get("/", async (req, res) => {
 
       videogames = [...vgsApi, ...vgsDb]; //agrego los vg de la bd
     }  
-    
-    else if(con === "2"){
-      vgsApi = await getVideogamesFromApi();
-      vgsDb = await getVideogamesFromDb();
-       console.log('back - get from api y bd con = 2, imprimo lo que trajo de la bd')
-        console.log(vgsDb)
-      videogames = [...vgsApi, ...vgsDb]; //agrego los vg de la bd 
-    }
+       
 
-    else if(con === "1"){
+    else if(con === "1"){//si con es 1 obtengo solo de la base de datos
       
       vgsDb = await getVideogamesFromDb();
-       console.log('back - get solo from  bd con = 1, imprimo lo que trajo de la bd')
+       console.log('back - get solo from  bd con = 1, imprimo solo lo que trajo de la bd')
         console.log(vgsDb)
       videogames = [ ...vgsDb]; //agrego los vg de la bd 
     }
+    else {//si no obtengo api y base de datos
+      vgsApi = await getVideogamesFromApi();
+      vgsDb = await getVideogamesFromDb();
+            videogames = [...vgsApi, ...vgsDb]; //agrego los vg de la bd 
+    }
+
+   
 
     //const vgsBd = await Videogame.findAll();
     
