@@ -21,7 +21,6 @@ Debe buscar tanto los de la API como los de la base de datos
 //https://api.rawg.io/api/games?search=${name}&key=928a106257314462a3a43bf37033df35
  */
 
-
 const getVideogamesFromApi = async (name) => {
   try {
     let apiData = [];
@@ -87,14 +86,13 @@ const getVideogamesFromApi = async (name) => {
     }
 
     cant = videogamesApi.length;
-    return videogamesApi;
+    return videogamesApi; //retorna un array vacio o el array de objetos
   } catch (error) {
     return { error: error.message };
   }
 };
 
 const getVideogamesFromDb = async (name) => {
-  
   try {
     if (!name) {
       let vgsBd = await Videogame.findAll({
@@ -107,10 +105,9 @@ const getVideogamesFromDb = async (name) => {
           },
         },
       });
-     // let vgs = addArrayGenres(vgsBd);
+      // let vgs = addArrayGenres(vgsBd);
       //return vgs;
       return vgsBd;
-
     } else {
       let vgsBd = await Videogame.findAll({
         where: { name: { [Op.iLike]: `%${name}%` } },
@@ -121,7 +118,7 @@ const getVideogamesFromDb = async (name) => {
           },
         },
       });
-     // let vgs = addArrayGenres(vgsBd);
+      // let vgs = addArrayGenres(vgsBd);
       //return vgs;
       return vgsBd;
     }
@@ -132,75 +129,53 @@ const getVideogamesFromDb = async (name) => {
 
 router.get("/", async (req, res) => {
   try {
-    const { con,  name } = req.query;
-
-    console.log(` estoy en back con es `);
-    console.log(con);
-
-    console.log(` estoy en back name es `);
-    console.log(name);
+    const { con, name } = req.query;
 
     let vgsApi = [];
     let vgsDb = [];
     let videogames = [];
-/*
-    if (con === "0") {
-      console.log(` otra vez estoy en back con con 0`);
-      //se conecta x primera vez a la api
-      vgsApi = await getVideogamesFromApi();
-      videogames = vgsApi;
-    }
 
-    if(con === "1"){
-      console.log(` otra vez estoy en back con con =1`);
-      vgsDb = await getVideogamesFromDb();
-      videogames = vgsDb;
-    }
+    //asigno valor al array de videogames de acuerdo a la solicitud
 
-*/
-    if(name){
-      vgsApi = await getVideogamesFromApi(name); 
+    if (name) {
+      //si filto videogames x name
+      vgsApi = await getVideogamesFromApi(name);
       vgsDb = await getVideogamesFromDb(name);
-
+      console.log(
+        "Obtengo solo los videogames de la api y la bd filtrados x nombre"
+      );
       videogames = [...vgsApi, ...vgsDb]; //agrego los vg de la bd
-    }  
-       
+    } else if (con === "1") {
+      //si con es 1 obtengo solo de la base de datos
 
-    else if(con === "1"){//si con es 1 obtengo solo de la base de datos
-      
       vgsDb = await getVideogamesFromDb();
-       console.log('back - get solo from  bd con = 1, imprimo solo lo que trajo de la bd')
-        console.log(vgsDb)
-      videogames = [ ...vgsDb]; //agrego los vg de la bd 
+      console.log("Obtengo solo los videogames de la bd");
+      videogames = [...vgsDb]; //agrego los vg de la bd
 
-      if (!videogames.length) {   
+      if (!videogames.length) {
+        //para personalizar mensaje de status 400
         return res
           .status(400)
           .json({ Message: "No existen videogames en la base de datos" });
       }
-    }
-    else {//si no obtengo api y base de datos
+    } else {
+      //si no, obtengo los videogames de la api y la base de datos
       vgsApi = await getVideogamesFromApi();
       vgsDb = await getVideogamesFromDb();
-            videogames = [...vgsApi, ...vgsDb]; //agrego los vg de la bd 
+      console.log("Obtengo los videogames de la api y la bd");
+      videogames = [...vgsApi, ...vgsDb]; //agrego los vg de la bd
     }
 
-   
-
     //const vgsBd = await Videogame.findAll();
-    
 
+    //validando si hay elementos en el array de resultado
     if (videogames.length) {
-      console.log(`cant total ${videogames.length}`);
-      console.log(
-        `lo que hay en la rta del router.get("/", async (req, res) => { ${videogames}`
-      );
-      //console.log(videogames);
+      console.log("retornando el array de videogames");
       return res.status(200).json({ videogames });
     } else {
       return res
         .status(400)
-        .json({ Message: "No existen videogames con ese nombre" });
+        .json({ Message: "No fue posible obtener videogames" });
     }
   } catch (error) {
     res.status(400).json({ Error: error.message });
@@ -221,64 +196,63 @@ router.post("/", async (req, res) => {
       rating,
       background_image,
       platforms,
-      genres, 
-      origen
+      genres,
+      origen,
     } = req.body;
-     if (
+    if (
       !name |
       !description |
       !released |
       !rating |
       !background_image |
-      !platforms|
+      !platforms |
       !genres.length
     ) {
       return res.status(400).json({ Message: "Datos incompletos" });
     } else {
-    let newVideogameBd = await Videogame.create({
-      name,
-      description,
-      released,
-      rating,
-      background_image,
-      platforms,
-      origen
-    });
+      let newVideogameBd = await Videogame.create({
+        name,
+        description,
+        released,
+        rating,
+        background_image,
+        platforms,
+        origen,
+      });
 
-    let genreIntance;
-    let arrayGenreInstances = [];
-    const long = genres.length;//genres es un [] que viene del front 
+      let genreIntance;
+      let arrayGenreInstances = [];
+      const long = genres.length; //genres es un [] que viene del front
 
-    for (let i = 0; i < long; i++) {     
-      genreIntance = await Genre.findOne({ where: { name: genres[i] } });
-      arrayGenreInstances.push(genreIntance);
-    }
+      for (let i = 0; i < long; i++) {
+        genreIntance = await Genre.findOne({ where: { name: genres[i] } });
+        arrayGenreInstances.push(genreIntance);
+      }
 
-    //if (arrayGenreInstances.length) {
-    newVideogameBd.addGenres(arrayGenreInstances); //aqui le paso las instancias de genero al vg creado
-    console.log("imprimiendo la longitud de los generos del vg");
-    console.log(await newVideogameBd.countGenres());
+      //if (arrayGenreInstances.length) {
+      newVideogameBd.addGenres(arrayGenreInstances); //aqui le paso las instancias de genero al vg creado
+      console.log("imprimiendo la longitud de los generos del vg");
+      console.log(await newVideogameBd.countGenres());
 
-    /*   const result = await Videogame.findOne({ //este funciona con un solo genero
+      /*   const result = await Videogame.findOne({ //este funciona con un solo genero
           where: { name },
           include: Genre  
         });*/
 
-    const videogame = await Videogame.findOne({
-      //este funciona con un [] de generos
-      where: { name },
-      include: {
-        model: Genre,
-        through: {
-          attributes: [],
+      const videogame = await Videogame.findOne({
+        //este funciona con un [] de generos
+        where: { name },
+        include: {
+          model: Genre,
+          through: {
+            attributes: [],
+          },
         },
-      },
-    });
-   
+      });
 
-    return res.status(201).json({videogame}); //devuelve el objeto creado en la bd
-    // }
-    }  
+      return res.status(201).json({ videogame }); //devuelve el objeto creado en la bd
+      // }
+    }
   } catch (error) {
     return res.status(400).json({ Error: error.message });
   }
