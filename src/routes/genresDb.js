@@ -4,7 +4,7 @@ const { Genre } = require('../db');
 
 const router = Router();
 
-
+//muestra los generos que fueron insertados en la base de datos
 const getGenresFromDb = async () => { 
     try {
           const genresBd = await Genre.findAll(); 

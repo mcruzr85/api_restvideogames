@@ -10,6 +10,8 @@ const { Genre } = require('../db');
 
 const router = Router();
 
+//este metodo obtiene los generos desde la api y los inserta en la base de datos
+
 const getGenresFromApi = async () => {
   try {
     let resultData = await  axios('https://api.rawg.io/api/genres?key=928a106257314462a3a43bf37033df35')  
