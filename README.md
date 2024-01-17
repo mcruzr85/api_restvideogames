@@ -4,36 +4,32 @@
 
 ## **📌 OBJETIVOS**
 
-Este proyecto es una Single Page Application creada utilizando las tecnologías: **React**, **Redux**, **Node**, **Express** y **Sequelize**. Para aplicar estilos a la SPA hemos usado **CSS** y **Styled Components**.
+Este proyecto es una API Rest creada utilizando las tecnologías: **Node**, **Express** y **Sequelize**. 
 
-La aplicación web se conecta a la API [**rawg**](https://rawg.io/apidocs), entre sus funcionalidades tenemos:
+La aplicación web se conecta a la API [**rawg**](https://rawg.io/apidocs) y a una base de datos en PostGreSQL, entre sus funcionalidades tenemos:
 
-- Mostrar 100 videojuegos.
+- Mostrar videojuegos.
 - Buscar videojuegos.
 - Visualizar la información de los videojuegos.
-- Filtrarlos.
-- Ordenarlos.
 - Crear nuevos videojuegos.
 
 <br />
 
 ## **📁 INSTRUCCIONES**
 
+La API se encuentra deployada en un servidor en railway en la dirección: https://apirestvideogames-production.up.railway.app/
+
 Pasos para poder levantar la App
 
-1- Tu primer paso será ejecutar el comando npm install para instalar todas las dependencias, tando en la carpeta /api como en la /client
+1- Tu primer paso será ejecutar el comando npm install para instalar todas las dependencias en la carpeta /client
 <br/>
-2- En una terminal tipear para que se levante el servidor local npm start en el back y luego en el front.
+2- En una terminal tipear para que se levante el servidor local npm start.
 
-Listo! Disfruta de esta app hecha con mucho amor 🌹💖✨💛🚀
+Listo! Disfruta de esta API Rest hecha con mucho amor 🌹💖✨💛🚀
 
 ---
 
 <br />
-
-<div align="center">
-<img src="./assets/hello.png" alt="Rick and Morty dancing" />
-</div>
 
 <!--
 ![HenryLogo](https://d31uz8lwfmyn8g.cloudfront.net/Assets/logo-henry-white-lg.png)
