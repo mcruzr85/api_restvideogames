@@ -172,6 +172,12 @@ router.get("/", async (req, res) => {
        console.log('back - get solo from  bd con = 1, imprimo solo lo que trajo de la bd')
         console.log(vgsDb)
       videogames = [ ...vgsDb]; //agrego los vg de la bd 
+
+      if (!videogames.length) {   
+        return res
+          .status(400)
+          .json({ Message: "No existen videogames en la base de datos" });
+      }
     }
     else {//si no obtengo api y base de datos
       vgsApi = await getVideogamesFromApi();
